@@ -67,7 +67,7 @@ fun HomeContent(actionLeft: () -> Unit, actionRight: () -> Unit) {
             modifier = Modifier.weight(0.8f),
             wind = "234",
             temp = "30",
-            humidit = "25"
+            humidity = "25"
         )
     }
 }
@@ -149,7 +149,7 @@ private fun WeatherTitle(modifier: Modifier, text: String) {
 }
 
 @Composable
-private fun WeatherDetails(modifier: Modifier, wind: String, temp: String, humidit: String) {
+fun WeatherDetails(modifier: Modifier, wind: String, temp: String, humidity: String) {
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
@@ -171,7 +171,7 @@ private fun WeatherDetails(modifier: Modifier, wind: String, temp: String, humid
                 .width(2.dp)
                 .background(color = MaterialTheme.colors.secondary)
         )
-        DoubleText("Humidit", "$humidit%")
+        DoubleText("humidity", "$humidity%")
     }
 }
 

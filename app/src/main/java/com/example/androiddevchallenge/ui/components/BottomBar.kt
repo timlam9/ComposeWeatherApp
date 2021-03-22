@@ -1,5 +1,6 @@
 package com.example.androiddevchallenge.ui.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,14 +44,17 @@ fun BottomBar(navController: NavHostController) {
         ) {
             NavigationIcon(
                 title = stringResource(R.string.home),
+                icon = R.drawable.ic_home,
                 modifier = Modifier.clickable { navController.navigate(HOME) }
             )
             NavigationIcon(
                 title = stringResource(R.string.search),
+                icon = R.drawable.ic_search,
                 modifier = Modifier.clickable { navController.navigate(SEARCH) }
             )
             NavigationIcon(
                 title = stringResource(R.string.settings),
+                icon = R.drawable.ic_settings,
                 modifier = Modifier.clickable { navController.navigate(SETTINGS) }
             )
         }
@@ -58,13 +62,13 @@ fun BottomBar(navController: NavHostController) {
 }
 
 @Composable
-fun NavigationIcon(title: String, modifier: Modifier) {
+fun NavigationIcon(title: String, @DrawableRes icon: Int, modifier: Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_home),
+            painter = painterResource(id = icon),
             colorFilter = ColorFilter.tint(color = MaterialTheme.colors.onBackground),
             contentDescription = stringResource(R.string.home),
             modifier = Modifier.size(18.dp)

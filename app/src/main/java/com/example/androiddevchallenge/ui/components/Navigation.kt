@@ -1,5 +1,6 @@
 package com.example.androiddevchallenge.ui.components
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -12,6 +13,7 @@ import com.example.androiddevchallenge.ui.components.screens.HomeScreen
 import com.example.androiddevchallenge.ui.components.screens.SearchScreen
 import com.example.androiddevchallenge.ui.components.screens.SettingsScreen
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun Navigation(navController: NavHostController) {
