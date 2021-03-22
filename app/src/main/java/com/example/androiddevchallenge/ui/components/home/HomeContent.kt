@@ -143,7 +143,7 @@ private fun WeatherTitle(modifier: Modifier, text: String) {
         Spacer(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(transparent, white)))
+                .background(Brush.verticalGradient(listOf(transparent, MaterialTheme.colors.surface)))
         )
     }
 }
