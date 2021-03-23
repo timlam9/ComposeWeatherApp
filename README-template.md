@@ -2,16 +2,19 @@
 
 <!--- Replace <OWNER> with your Github Username and <REPOSITORY> with the name of your repository. -->
 <!--- You can find both of these in the url bar when you open your repository in github. -->
-![Workflow result](https://github.com/<OWNER>/<REPOSITORY>/workflows/Check/badge.svg)
+![Workflow result](https://github.com/timlam9/ComposeWeatherApp/workflows/Check/badge.svg)
 
 
 ## :scroll: Description
 <!--- Describe your app in one or two sentences -->
+A simple weather app using Jetpack Compose.
 
 
 ## :bulb: Motivation and Context
 <!--- Optionally point readers to interesting parts of your submission. -->
 <!--- What are you especially proud of? -->
+A Compose app with a bottom sheet and custom bottom bar.
+Ui inspiration source: https://dribbble.com/shots/14807515-Daily-Weather-Prediction
 
 
 ## :camera_flash: Screenshots

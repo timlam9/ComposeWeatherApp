@@ -18,7 +18,6 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.Column
@@ -42,7 +41,6 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
 @ExperimentalMaterialApi
 class MainActivity : AppCompatActivity() {
 
-    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.makeTransparentStatusBar()
@@ -53,10 +51,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }
 
-@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun MyApp() {
@@ -66,7 +62,6 @@ fun MyApp() {
     }
 }
 
-@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 private fun MainContent(navController: NavHostController) {
@@ -93,8 +88,6 @@ private fun BoxWithConstraintsScope.FindScreenSize() {
     maxBottomSheetHeight = maxHeight - maxHeight / 8
 }
 
-
-@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Preview("Light Theme", widthDp = 360, heightDp = 640)
 @Composable
@@ -104,7 +97,6 @@ fun LightPreview() {
     }
 }
 
-@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Preview("Dark Theme", widthDp = 360, heightDp = 640)
 @Composable
