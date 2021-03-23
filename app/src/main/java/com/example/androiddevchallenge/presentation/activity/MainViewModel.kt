@@ -24,6 +24,7 @@ import com.example.androiddevchallenge.data.WeatherRepo
 import com.example.androiddevchallenge.data.response.Current
 import com.example.androiddevchallenge.data.response.Daily
 import com.example.androiddevchallenge.data.response.Hourly
+import com.example.androiddevchallenge.data.response.WeatherData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -57,16 +58,17 @@ class MainViewModel @Inject constructor(private val repo: WeatherRepo) : ViewMod
 
     init {
         viewModelScope.launch {
-            state = when (repo.getForecast()) {
+            state = when (val uiState: UiState<WeatherData> =
+                repo.getForecast(37.97318668385807, 23.72477316213453)) {
                 is UiState.Failed -> {
-                    error = (repo.getForecast() as UiState.Failed).message
+                    error = uiState.message
                     State.FAILED
                 }
                 is UiState.Loading -> {
                     State.LOADING
                 }
                 is UiState.Success -> {
-                    with((repo.getForecast() as UiState.Success)) {
+                    with(uiState) {
                         weather = data.current
                         timezone = data.timezone
                         dailyData = data.daily
@@ -77,4 +79,5 @@ class MainViewModel @Inject constructor(private val repo: WeatherRepo) : ViewMod
             }
         }
     }
+
 }

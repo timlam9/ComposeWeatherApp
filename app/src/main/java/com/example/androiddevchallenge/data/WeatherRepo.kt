@@ -20,8 +20,8 @@ import com.example.androiddevchallenge.presentation.activity.UiState
 
 class WeatherRepo(private val weatherApi: WeatherApi) {
 
-    suspend fun getForecast(): UiState<WeatherData> {
-        val response = weatherApi.getForecast("52.345,54.231")
+    suspend fun getForecast(lat: Double = 52.345, lon: Double = 54.231): UiState<WeatherData> {
+        val response = weatherApi.getForecast("$lat,$lon")
 
         return if (response.error != null) {
             UiState.Failed(response.error.toString())
