@@ -58,8 +58,10 @@ class MainViewModel @Inject constructor(private val repo: WeatherRepo) : ViewMod
 
     init {
         viewModelScope.launch {
-            state = when (val uiState: UiState<WeatherData> =
-                repo.getForecast(37.97318668385807, 23.72477316213453)) {
+            state = when (
+                val uiState: UiState<WeatherData> =
+                    repo.getForecast(37.97318668385807, 23.72477316213453)
+            ) {
                 is UiState.Failed -> {
                     error = uiState.message
                     State.FAILED
@@ -79,5 +81,4 @@ class MainViewModel @Inject constructor(private val repo: WeatherRepo) : ViewMod
             }
         }
     }
-
 }
