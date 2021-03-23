@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.theme
+package com.example.androiddevchallenge.data
 
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Shapes
-import androidx.compose.ui.unit.dp
+import com.example.androiddevchallenge.data.response.WeatherData
+import com.example.androiddevchallenge.presentation.activity.UiState
 
-val shapes = Shapes(
-    small = RoundedCornerShape(4.dp),
-    medium = RoundedCornerShape(4.dp),
-    large = RoundedCornerShape(0.dp)
-)
+class WeatherRepo(private val weatherApi: WeatherApi) {
+
+    suspend fun getForecast(): UiState<WeatherData> {
+        val response = weatherApi.getForecast("52.345,54.231")
+
+        return if (response.error != null) {
+            UiState.Failed(response.error.toString())
+        } else {
+            UiState.Success(response.data)
+        }
+    }
+}

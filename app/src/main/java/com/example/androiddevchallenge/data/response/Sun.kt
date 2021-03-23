@@ -13,17 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.theme
+package com.example.androiddevchallenge.data.response
 
-import androidx.compose.ui.graphics.Color
-
-val purple700 = Color(0xFF3700B3)
-val transparent = Color(0xFFFFFF)
-val whiteTransparent = Color(0x17FFFFFF)
-val white = Color(0xFFFFFFFF)
-val gray = Color(0xFFA3A3A3)
-val black = Color(0xFF000000)
-val almostWhite = Color(0xFFD5E1FD)
-val lightBlue = Color(0xFF4c29e7)
-val darkBlue = Color(0xFF2f16a5)
-val gold = Color(0xFFDBA943)
+data class Sun(
+    val sunrise: String,
+    val sunset: String
+)

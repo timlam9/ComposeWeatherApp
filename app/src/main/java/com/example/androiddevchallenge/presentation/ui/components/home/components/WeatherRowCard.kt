@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components.home
+package com.example.androiddevchallenge.presentation.ui.components.home.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,15 +38,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.androiddevchallenge.ui.theme.whiteTransparent
+import com.example.androiddevchallenge.presentation.ui.formattedValue
+import com.example.androiddevchallenge.presentation.ui.getImageFromType
+import com.example.androiddevchallenge.presentation.ui.theme.whiteTransparent
 
 @Composable
 fun WeatherRowCard(
-    @DrawableRes icon: Int,
+    type: String,
     title: String,
-    wind: String,
-    temp: String,
-    humidity: String
+    wind: Double,
+    temp: Double,
+    humidity: Double
 ) {
     Box(
         modifier = Modifier.fillMaxWidth(),
@@ -68,9 +69,9 @@ fun WeatherRowCard(
             )
             WeatherDetailsSmall(
                 modifier = Modifier.padding(start = 10.dp),
-                wind = wind,
-                temp = temp,
-                humidity = humidity
+                wind = wind.formattedValue(),
+                temp = temp.formattedValue(),
+                humidity = humidity.formattedValue()
             )
         }
         Row(
@@ -79,7 +80,7 @@ fun WeatherRowCard(
             modifier = Modifier.fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = icon),
+                painter = painterResource(id = getImageFromType(type)),
                 contentDescription = "",
                 modifier = Modifier.size(80.dp)
             )
@@ -97,7 +98,7 @@ private fun WeatherDetailsSmall(modifier: Modifier, wind: String, temp: String, 
     ) {
         DoubleTextSmall("Wind", "$wind km/h")
         SpaceDivider()
-        DoubleTextSmall("Temp", "$temp`C")
+        DoubleTextSmall("Temp", "$temp°C")
         SpaceDivider()
         DoubleTextSmall("humidity", "$humidity%")
     }

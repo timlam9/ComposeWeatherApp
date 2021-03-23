@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components
+package com.example.androiddevchallenge.presentation.ui.components
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.androiddevchallenge.HOME
-import com.example.androiddevchallenge.SEARCH
-import com.example.androiddevchallenge.SETTINGS
-import com.example.androiddevchallenge.ui.components.screens.HomeScreen
-import com.example.androiddevchallenge.ui.components.screens.SearchScreen
-import com.example.androiddevchallenge.ui.components.screens.SettingsScreen
+import com.example.androiddevchallenge.presentation.activity.MainViewModel
+import com.example.androiddevchallenge.presentation.ui.HOME
+import com.example.androiddevchallenge.presentation.ui.SEARCH
+import com.example.androiddevchallenge.presentation.ui.SETTINGS
+import com.example.androiddevchallenge.presentation.ui.components.home.HomeScreen
+import com.example.androiddevchallenge.presentation.ui.components.screens.SearchScreen
+import com.example.androiddevchallenge.presentation.ui.components.screens.SettingsScreen
 
 @ExperimentalMaterialApi
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, viewModel: MainViewModel) {
     NavHost(navController = navController, startDestination = HOME) {
         composable(HOME) {
-            HomeScreen()
+            HomeScreen(viewModel)
         }
 
         composable(SEARCH) {

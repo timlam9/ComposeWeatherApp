@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components.home
+package com.example.androiddevchallenge.presentation.ui.components.home
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -26,9 +27,12 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -43,14 +47,67 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.R
-import com.example.androiddevchallenge.minBottomSheetHeight
-import com.example.androiddevchallenge.ui.theme.gold
-import com.example.androiddevchallenge.ui.theme.transparent
+import com.example.androiddevchallenge.presentation.activity.MainViewModel
+import com.example.androiddevchallenge.presentation.activity.State
+import com.example.androiddevchallenge.presentation.ui.formattedToday
+import com.example.androiddevchallenge.presentation.ui.formattedValue
+import com.example.androiddevchallenge.presentation.ui.getImageFromType
+import com.example.androiddevchallenge.presentation.ui.minBottomSheetHeight
+import com.example.androiddevchallenge.presentation.ui.theme.gold
+import com.example.androiddevchallenge.presentation.ui.theme.transparent
 
 @Composable
-fun HomeContent(actionLeft: () -> Unit, actionRight: () -> Unit) {
+fun HomeContent(viewModel: MainViewModel, actionLeft: () -> Unit, actionRight: () -> Unit) {
+
+    when (viewModel.state) {
+        State.LOADING -> LoadingContent()
+        State.FAILED -> FailedContent(viewModel.error)
+        State.SUCCESS -> DataContent(viewModel, actionLeft, actionRight)
+    }
+}
+
+@Composable
+fun LoadingContent() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp)
+        )
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun FailedContent(error: String) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp)
+        )
+        Text(
+            text = error,
+            style = MaterialTheme.typography.h5,
+            color = MaterialTheme.colors.error
+        )
+    }
+}
+
+@Composable
+fun DataContent(viewModel: MainViewModel, actionLeft: () -> Unit, actionRight: () -> Unit) {
+    val currentWeather = viewModel.weather
+    val timeZone = viewModel.timezone
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,11 +120,12 @@ fun HomeContent(actionLeft: () -> Unit, actionRight: () -> Unit) {
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(start = 20.dp, end = 20.dp),
-            date = "Today, 15 Dec",
-            city = "Surakarta"
+            date = currentWeather?.time ?: "",
+            city = timeZone
         )
         WeatherImage(
             modifier = Modifier.weight(3f),
+            image = getImageFromType(currentWeather?.type ?: ""),
             actionLeft = actionLeft,
             actionRight = actionRight
         )
@@ -75,26 +133,26 @@ fun HomeContent(actionLeft: () -> Unit, actionRight: () -> Unit) {
             modifier = Modifier
                 .weight(0.5f)
                 .fillMaxWidth(),
-            text = "Cloudy"
+            text = currentWeather?.type ?: ""
         )
         WeatherDetails(
             modifier = Modifier.weight(0.8f),
-            wind = "234",
-            temp = "30",
-            humidity = "25"
+            wind = currentWeather?.windSpeed ?: 0.0,
+            temp = currentWeather?.temperature ?: 0.0,
+            humidity = currentWeather?.relHumidity ?: 0.0
         )
     }
 }
 
 @Composable
 private fun DateView(modifier: Modifier, date: String, city: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.CenterStart
     ) {
         Column {
             Text(
-                text = date,
+                text = date.formattedToday(),
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.secondary
             )
@@ -104,23 +162,32 @@ private fun DateView(modifier: Modifier, date: String, city: String) {
                 color = MaterialTheme.colors.primary
             )
         }
-        Spacer(modifier = Modifier.weight(4f))
-        Image(
-            painter = painterResource(id = R.drawable.ic_account_box),
-            contentDescription = "",
-            colorFilter = ColorFilter.tint(color = MaterialTheme.colors.primary),
-            modifier = Modifier
-                .aspectRatio(1f)
-                .weight(1f)
-                .clip(RoundedCornerShape(10.dp))
-                .background(color = gold)
-                .padding(4.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_person),
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(color = MaterialTheme.colors.primary),
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(color = gold)
+                    .padding(4.dp)
+            )
+        }
     }
 }
 
 @Composable
-private fun WeatherImage(modifier: Modifier, actionLeft: () -> Unit, actionRight: () -> Unit) {
+private fun WeatherImage(
+    modifier: Modifier,
+    @DrawableRes image: Int,
+    actionLeft: () -> Unit,
+    actionRight: () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -130,7 +197,7 @@ private fun WeatherImage(modifier: Modifier, actionLeft: () -> Unit, actionRight
             Icon(imageVector = Icons.Default.ArrowLeft, contentDescription = "Arrow left")
         }
         Image(
-            painter = painterResource(id = R.drawable.ic_cloud),
+            painter = painterResource(id = image),
             contentDescription = "",
             colorFilter = ColorFilter.tint(color = MaterialTheme.colors.primary),
             modifier = Modifier
@@ -151,25 +218,32 @@ private fun WeatherTitle(modifier: Modifier, text: String) {
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.h4.copy(fontFamily = FontFamily.SansSerif),
             color = MaterialTheme.colors.primary,
         )
         Spacer(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Brush.verticalGradient(listOf(transparent, MaterialTheme.colors.surface)))
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            transparent,
+                            MaterialTheme.colors.surface
+                        )
+                    )
+                )
         )
     }
 }
 
 @Composable
-fun WeatherDetails(modifier: Modifier, wind: String, temp: String, humidity: String) {
+fun WeatherDetails(modifier: Modifier, wind: Double, temp: Double, humidity: Double) {
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
-        DoubleText("Wind", wind)
+        DoubleText("Wind", wind.formattedValue())
         Spacer(
             modifier = Modifier
                 .fillMaxHeight()
@@ -177,7 +251,7 @@ fun WeatherDetails(modifier: Modifier, wind: String, temp: String, humidity: Str
                 .width(2.dp)
                 .background(color = MaterialTheme.colors.secondary)
         )
-        DoubleText("Temp", "$temp`C")
+        DoubleText("Temp", "${temp.formattedValue()}°C")
         Spacer(
             modifier = Modifier
                 .fillMaxHeight()
@@ -185,7 +259,7 @@ fun WeatherDetails(modifier: Modifier, wind: String, temp: String, humidity: Str
                 .width(2.dp)
                 .background(color = MaterialTheme.colors.secondary)
         )
-        DoubleText("humidity", "$humidity%")
+        DoubleText("humidity", "${humidity.formattedValue()}%")
     }
 }
 

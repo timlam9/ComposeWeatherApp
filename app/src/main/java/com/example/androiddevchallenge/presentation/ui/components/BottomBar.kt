@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components
+package com.example.androiddevchallenge.presentation.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -37,10 +37,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
-import com.example.androiddevchallenge.HOME
 import com.example.androiddevchallenge.R
-import com.example.androiddevchallenge.SEARCH
-import com.example.androiddevchallenge.SETTINGS
+import com.example.androiddevchallenge.presentation.ui.HOME
+import com.example.androiddevchallenge.presentation.ui.SEARCH
+import com.example.androiddevchallenge.presentation.ui.SETTINGS
 import java.util.Locale
 
 @Composable

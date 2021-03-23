@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
+@file:Suppress("DEPRECATION")
 
+package com.example.androiddevchallenge.presentation.ui
+
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.compose.ui.unit.dp
+import com.example.androiddevchallenge.R
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
 
 val STATUS_BAR_HEIGHT = 26.dp
 
@@ -58,4 +65,56 @@ fun Window.markAttributes(bits: Int, value: Boolean) {
         params.flags = params.flags and bits.inv()
     }
     attributes = params
+}
+
+@SuppressLint("SimpleDateFormat")
+fun String.formattedToday(): String {
+    val format = SimpleDateFormat("yyyy-MM-dd")
+    var date: Date? = null
+
+    try {
+        date = format.parse(this)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    val sdf = SimpleDateFormat("dd EEE")
+    return if (date != null) "Today, ${sdf.format(date)}" else "Today"
+}
+
+@SuppressLint("SimpleDateFormat")
+fun String.formattedTime(): String {
+    val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+    var date: Date? = null
+
+    try {
+        date = format.parse(this)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    val sdf = SimpleDateFormat("HH:mm")
+    return if (date != null) sdf.format(date) else ""
+}
+
+@SuppressLint("SimpleDateFormat")
+fun String.formattedDay(): String {
+    val format = SimpleDateFormat("yyyy-MM-dd")
+    var date: Date? = null
+
+    try {
+        date = format.parse(this)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    val sdf = SimpleDateFormat("EEEE")
+    return if (date != null) sdf.format(date) else ""
+}
+
+@SuppressLint("DefaultLocale")
+fun Double.formattedValue(): String = java.lang.String.format("%.2f", this)
+
+fun getImageFromType(type: String): Int {
+    return R.drawable.ic_cloud
 }

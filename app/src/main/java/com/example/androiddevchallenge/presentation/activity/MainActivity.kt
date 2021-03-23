@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
+package com.example.androiddevchallenge.presentation.activity
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
@@ -31,15 +32,22 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.androiddevchallenge.ui.components.BottomBar
-import com.example.androiddevchallenge.ui.components.Navigation
-import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.presentation.ui.STATUS_BAR_HEIGHT
+import com.example.androiddevchallenge.presentation.ui.components.BottomBar
+import com.example.androiddevchallenge.presentation.ui.components.Navigation
+import com.example.androiddevchallenge.presentation.ui.makeTransparentStatusBar
+import com.example.androiddevchallenge.presentation.ui.maxBottomSheetHeight
+import com.example.androiddevchallenge.presentation.ui.minBottomSheetHeight
+import com.example.androiddevchallenge.presentation.ui.theme.MyTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 @ExperimentalMaterialApi
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             MyTheme {
-                MyApp()
+                MyApp(viewModel)
             }
         }
     }
@@ -55,16 +63,16 @@ class MainActivity : AppCompatActivity() {
 
 @ExperimentalMaterialApi
 @Composable
-fun MyApp() {
+fun MyApp(viewModel: MainViewModel) {
     val navController = rememberNavController()
     Surface(color = MaterialTheme.colors.surface) {
-        MainContent(navController)
+        MainContent(navController, viewModel)
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
-private fun MainContent(navController: NavHostController) {
+private fun MainContent(navController: NavHostController, viewModel: MainViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(
             modifier = Modifier
@@ -76,7 +84,7 @@ private fun MainContent(navController: NavHostController) {
             contentAlignment = Alignment.BottomCenter
         ) {
             FindScreenSize()
-            Navigation(navController)
+            Navigation(navController, viewModel)
             BottomBar(navController)
         }
     }
@@ -86,22 +94,4 @@ private fun MainContent(navController: NavHostController) {
 private fun BoxWithConstraintsScope.FindScreenSize() {
     minBottomSheetHeight = maxHeight / 3
     maxBottomSheetHeight = maxHeight - maxHeight / 8
-}
-
-@ExperimentalMaterialApi
-@Preview("Light Theme", widthDp = 360, heightDp = 640)
-@Composable
-fun LightPreview() {
-    MyTheme {
-        MyApp()
-    }
-}
-
-@ExperimentalMaterialApi
-@Preview("Dark Theme", widthDp = 360, heightDp = 640)
-@Composable
-fun DarkPreview() {
-    MyTheme(darkTheme = true) {
-        MyApp()
-    }
 }

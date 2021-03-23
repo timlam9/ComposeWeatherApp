@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components.screens
+package com.example.androiddevchallenge.data.response
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.androiddevchallenge.SEARCH
-
-@Composable
-fun SearchScreen() {
-    Column(modifier = Modifier.fillMaxSize().padding(20.dp)) {
-        Text(text = SEARCH)
-    }
-}
+data class Hourly(
+    val airQualityIndex: Double?,
+    val cloudCover: Double,
+    val preasure: Double,
+    val rain: Double,
+    val relHumidity: Double,
+    val snow: Double,
+    val temperature: Double,
+    val temperatureMax: Double,
+    val temperatureMin: Double,
+    val time: String,
+    val totalPrecipitation: Double,
+    val type: String,
+    val uvIndex: Double?,
+    val windBearing: Double,
+    val windGustsSpeed: Double,
+    val windSpeed: Double
+)

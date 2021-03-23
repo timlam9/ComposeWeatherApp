@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components.home
+package com.example.androiddevchallenge.presentation.ui.components.home.bottomsheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -38,10 +40,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.androiddevchallenge.R
+import com.example.androiddevchallenge.data.response.Hourly
+import com.example.androiddevchallenge.presentation.ui.components.home.components.WeatherColumnCard
 
 @Composable
-fun BoxWithConstraintsScope.MinBottomSheetContent(action: () -> Unit) {
+fun BoxWithConstraintsScope.MinBottomSheetContent(data: List<Hourly>, action: () -> Unit) {
     val dividerWidth = maxWidth / 6
     Column(
         modifier = Modifier
@@ -90,17 +93,19 @@ fun BoxWithConstraintsScope.MinBottomSheetContent(action: () -> Unit) {
                 }
             }
         }
-        Row(
+        LazyRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 10.dp, end = 10.dp, bottom = 5.dp, top = 5.dp)
+                .padding(start = 20.dp, end = 10.dp, bottom = 10.dp, top = 5.dp)
         ) {
-            WeatherColumnCard(R.drawable.ic_cloud, "12:00", "34")
-            WeatherColumnCard(R.drawable.ic_cloud, "12:00", "34")
-            WeatherColumnCard(R.drawable.ic_cloud, "12:00", "34")
-            WeatherColumnCard(R.drawable.ic_cloud, "12:00", "34")
+            items(data) { weather ->
+                with(weather) {
+                    WeatherColumnCard(type, time, temperature)
+                    Spacer(modifier = Modifier.padding(end = 10.dp))
+                }
+            }
         }
     }
 }

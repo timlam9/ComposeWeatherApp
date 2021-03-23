@@ -13,20 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components.screens
+package com.example.androiddevchallenge.data.response
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.androiddevchallenge.SETTINGS
-
-@Composable
-fun SettingsScreen() {
-    Column(modifier = Modifier.fillMaxSize().padding(20.dp)) {
-        Text(text = SETTINGS)
-    }
-}
+data class WeatherData(
+    val current: Current,
+    val daily: List<Daily>,
+    val hourly: List<Hourly>,
+    val timezone: String
+)

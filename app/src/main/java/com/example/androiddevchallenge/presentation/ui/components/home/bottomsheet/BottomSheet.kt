@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components.home
+package com.example.androiddevchallenge.presentation.ui.components.home.bottomsheet
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -35,13 +35,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.example.androiddevchallenge.maxBottomSheetHeight
-import com.example.androiddevchallenge.minBottomSheetHeight
+import com.example.androiddevchallenge.presentation.activity.MainViewModel
+import com.example.androiddevchallenge.presentation.ui.maxBottomSheetHeight
+import com.example.androiddevchallenge.presentation.ui.minBottomSheetHeight
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun BottomSheet(screenContent: @Composable () -> Unit) {
+fun BottomSheet(viewModel: MainViewModel, screenContent: @Composable () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
@@ -51,12 +52,13 @@ fun BottomSheet(screenContent: @Composable () -> Unit) {
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
             BottomSheetContent(
+                viewModel = viewModel,
+                bottomSheetScaffoldState = bottomSheetScaffoldState,
                 action = {
                     coroutineScope.launch {
                         changeBottomSheetState(bottomSheetScaffoldState)
                     }
-                },
-                bottomSheetScaffoldState = bottomSheetScaffoldState
+                }
             )
         },
         sheetPeekHeight = minBottomSheetHeight
@@ -76,7 +78,11 @@ private suspend fun changeBottomSheetState(bottomSheetScaffoldState: BottomSheet
 
 @ExperimentalMaterialApi
 @Composable
-fun BottomSheetContent(action: () -> Unit, bottomSheetScaffoldState: BottomSheetScaffoldState) {
+fun BottomSheetContent(
+    viewModel: MainViewModel,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
+    action: () -> Unit,
+) {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
@@ -88,8 +94,8 @@ fun BottomSheetContent(action: () -> Unit, bottomSheetScaffoldState: BottomSheet
         contentAlignment = Alignment.TopCenter
     ) {
         if (bottomSheetScaffoldState.bottomSheetState.isExpanded)
-            MaxBottomSheetContent()
+            MaxBottomSheetContent(data = viewModel.dailyData)
         else
-            MinBottomSheetContent(action = action)
+            MinBottomSheetContent(data = viewModel.hourlyData, action = action)
     }
 }

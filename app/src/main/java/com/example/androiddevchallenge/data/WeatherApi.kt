@@ -13,20 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge.ui.components.screens
+package com.example.androiddevchallenge.data
 
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.Composable
-import com.example.androiddevchallenge.ui.components.home.BottomSheet
-import com.example.androiddevchallenge.ui.components.home.HomeContent
+import com.example.androiddevchallenge.data.response.WeatherApiResponse
+import retrofit2.http.GET
+import retrofit2.http.Path
 
-@ExperimentalMaterialApi
-@Composable
-fun HomeScreen() {
-    BottomSheet {
-        HomeContent(
-            actionLeft = {},
-            actionRight = {}
-        )
-    }
+interface WeatherApi {
+
+    @GET("forecast/{coordinates}")
+    suspend fun getForecast(@Path("coordinates") coordinates: String): WeatherApiResponse
 }
